@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cor_fundo"
+    tools:context=".activity.CadastroDadosContaActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineDadosE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineDadosD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <TextView
+        android:id="@+id/lblTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Dados da conta"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosE"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblSeguidores"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:background="@android:color/darker_gray"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosD"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosE"
+        app:layout_constraintTop_toBottomOf="@+id/lblTitulo" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCadNomeUsuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_caixa_texto"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosD"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosE"
+        app:layout_constraintTop_toBottomOf="@+id/lblSeguidores">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtCadNomeUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="crie seu nome de usuário"
+            android:drawableLeft="@drawable/ic_baseline_alternate_email_24"
+            android:digits="abcdefghijklmnopqrstuvwxyz1234567890_."
+            android:inputType="textFilter"
+            android:longClickable="false"
+            android:textColor="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCadEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_caixa_texto"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosD"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosE"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCadNomeUsuario">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtCadEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Digite seu e-mail"
+            android:inputType="textEmailAddress"
+            android:longClickable="false"
+            android:textColor="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_caixa_texto"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosD"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosE"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCadEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtCadSenha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Crie uma senha"
+            android:inputType="textPassword"
+            android:longClickable="false"
+            android:textColor="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_caixa_texto"
+        android:hint="Confirme sua senha"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosD"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosE"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtCadConfirmaSenha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:longClickable="false"
+            android:textColor="#FFFFFF" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnFinalizar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_botoes"
+        android:text="Finalizar"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosD" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

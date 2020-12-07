@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/cor_fundo"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:theme="@style/AppCompatAlertDialogStyle">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nome do cliente" />
+
+            <EditText
+                android:id="@+id/txtNomeClienteEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telefone" />
+
+            <EditText
+                android:id="@+id/txtTelefoneEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:id="@+id/lblSessaoUnicaEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Valor da sessao única" />
+
+            <EditText
+                android:id="@+id/txtValorSessaoUnicaEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/lblSessaoMultiplaEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Valor por sessão" />
+
+            <EditText
+                android:id="@+id/txtValorSessaoMultiplaEvento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Data" />
+
+            <Button
+                android:id="@+id/btnDataEvento"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cor_botoes"
+                tools:text="Jan 16, 2019" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Início da sessão" />
+
+            <Button
+                android:id="@+id/btnHorarioInicialEvento"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:textColor="@color/cor_botoes"
+                tools:text="8:00 AM" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Término da sessão" />
+
+            <Button
+                android:id="@+id/btnHorarioFinalEvento"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:textColor="@color/cor_botoes"
+                tools:text="8:30 AM" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cor_fundo"
+    tools:context=".activity.CadastroDadosPessoaisActivity">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineDadosPessoais"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineDadosPessoais2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+
+    <TextView
+        android:id="@+id/lblWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Bem vindo(a)!"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblDescricao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:clickable="false"
+        android:padding="5dp"
+        android:text="Crie uma conta para conectar-se com clientes e promover sua arte"
+        android:textColor="@color/cor_botoes"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosPessoais2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosPessoais"
+        app:layout_constraintTop_toBottomOf="@+id/lblWelcome" />
+
+    <TextView
+        android:id="@+id/lblDados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Dados pessoais"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosPessoais"
+        app:layout_constraintTop_toBottomOf="@+id/lblDescricao" />
+
+    <LinearLayout
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosPessoais2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosPessoais"
+        app:layout_constraintTop_toBottomOf="@+id/lblDados">
+
+        <requestFocus />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutNome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_caixa_texto"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosPessoais2"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosPessoais"
+        app:layout_constraintTop_toTopOf="@+id/line">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtCadNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Digite seu nome completo"
+            android:inputType="textCapWords|textCapSentences"
+            android:longClickable="false"
+            android:textColor="@android:color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCPF"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_caixa_texto"
+        android:textColorHint="@android:color/darker_gray"
+        app:helperText=""
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosPessoais"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutNome">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtCadCPF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Digite seu CPF"
+            android:inputType="number"
+            android:longClickable="false"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCelular"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/background_caixa_texto"
+        android:textColorHint="@android:color/darker_gray"
+        app:layout_constraintStart_toStartOf="@+id/guidelineDadosPessoais"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutCPF">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtCadCelular"
+            android:layout_width="168dp"
+            android:layout_height="wrap_content"
+            android:hint="Celular"
+            android:inputType="number"
+            android:longClickable="false"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnProximo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_botoes"
+        android:foreground="@drawable/ic_baseline_navigate_next_24"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineDadosPessoais2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

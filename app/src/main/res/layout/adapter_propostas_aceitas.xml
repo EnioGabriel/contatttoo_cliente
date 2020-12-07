@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cor_fundo_dark">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgFotoTatuadorAndamento"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lblNomeTatuadorAndamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="nometatuador"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imgFotoTatuadorAndamento"
+        app:layout_constraintTop_toTopOf="@+id/imgFotoTatuadorAndamento" />
+
+    <TextView
+        android:id="@+id/lblValorAndamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Valor total"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="@+id/lblHoraInicioAndamento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lblNomeTatuadorAndamento" />
+
+    <TextView
+        android:id="@+id/lblDataAndamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="27/12/2020"
+        app:layout_constraintStart_toEndOf="@+id/imgFotoTatuadorAndamento"
+        app:layout_constraintTop_toBottomOf="@+id/lblNomeTatuadorAndamento" />
+
+    <TextView
+        android:id="@+id/lblHoraInicioAndamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="17:30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgFotoTatuadorAndamento"
+        app:layout_constraintTop_toBottomOf="@+id/lblDataAndamento"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnVisualizarInformacoesTatuagem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/background_botao_perfil"
+        android:text="Confirmar tatuagem finalizada"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblHoraInicioAndamento" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

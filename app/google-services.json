@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "426675768655",
+    "firebase_url": "https://apptattoo-ea2d8.firebaseio.com",
+    "project_id": "apptattoo-ea2d8",
+    "storage_bucket": "apptattoo-ea2d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426675768655:android:f5a3b573b721abffddc93a",
+        "android_client_info": {
+          "package_name": "com.example.apptattoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426675768655-etr8dkap685i2oe1428cl1svriakcnjt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apptattoo",
+            "certificate_hash": "6748be07022504f2af8f2e6496222bf07a5b8142"
+          }
+        },
+        {
+          "client_id": "426675768655-jp74jrpv8u0c6nnbnk4p06iflnfrgn88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuJjQ57Vyhx8jrUyxwVSboVOYZhZm65ro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426675768655-jp74jrpv8u0c6nnbnk4p06iflnfrgn88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426675768655:android:51a3ef7aaf71a63bddc93a",
+        "android_client_info": {
+          "package_name": "com.example.apptatuador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426675768655-fsj8ai4s7hr8gnfl1cqh9gricos974p9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apptatuador",
+            "certificate_hash": "6748be07022504f2af8f2e6496222bf07a5b8142"
+          }
+        },
+        {
+          "client_id": "426675768655-jp74jrpv8u0c6nnbnk4p06iflnfrgn88.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuJjQ57Vyhx8jrUyxwVSboVOYZhZm65ro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426675768655-jp74jrpv8u0c6nnbnk4p06iflnfrgn88.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
