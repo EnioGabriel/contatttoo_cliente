@@ -43,11 +43,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class SelecionaHorarioAgendaActivity extends AppCompatActivity {
 
-    @NonNull
-    private Evento[] EVENTOS_INICIAIS;
     private Evento evento;
     private Calendar diaHoje;
     private DateFormat dataFormat;
@@ -70,15 +70,16 @@ public class SelecionaHorarioAgendaActivity extends AppCompatActivity {
     boolean isEventoUnico = false;
     static boolean enviou = false;
     private DatabaseReference eventoRef;
-    private List<Evento> listaEvento;
+
+    private List<Evento> listaEventosCarregados = new ArrayList<>();
+    private List<Evento> listaEventosRepetidos = new ArrayList<>();
+    private int corEvento;
 
     private HashMap hashMapHorarios = new HashMap<String, Integer>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        listaEvento = new ArrayList<>();
 
         // Adicionando horario inicial de trabalho
         diaHoje = Calendar.getInstance();
@@ -209,9 +210,9 @@ public class SelecionaHorarioAgendaActivity extends AppCompatActivity {
         eventoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                listaEvento.clear();
+                listaEventosCarregados.clear();
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    listaEvento.add(snap.getValue(Evento.class));
+                    listaEventosCarregados.add(snap.getValue(Evento.class));
                 }
                 adicionarEventos();
                 mudancaDeDia();
@@ -224,77 +225,62 @@ public class SelecionaHorarioAgendaActivity extends AppCompatActivity {
         });
     }
 
-    private void adicionarEventos() {
-        evento = new Evento();
-        todosEventos = new LongSparseArray<>();
-        int corEvento;
-        List<Evento> listaEventosRepetidos;
-        List<Evento> listaEventosRepetidosCopy;
-        List<Long> listDia = new ArrayList<>();
-        listaEventosRepetidos = new ArrayList<>();
-        listaEventosRepetidosCopy = new ArrayList<>();
+    private void populandoLista() {
 
-        for (int i = 0; i < listaEvento.size(); i++) {
-            evento = listaEvento.get(i);
-            //Verificando se evento foi inserido manualmente ou via consulta
-            // Serve para separar os tipos de evento visualmente
+        for (int i = 0; i < listaEventosCarregados.size(); i++) {
+            evento = listaEventosCarregados.get(i);
+
             if (evento.getCorEvento().equals("Vermelho")) {
                 corEvento = android.R.color.holo_red_dark;
             } else {
                 corEvento = R.color.cor_botoes;
             }
-
-            diaHoje = Calendar.getInstance();
-            diaHoje.set(Calendar.HOUR_OF_DAY, 0);
-            diaHoje.set(Calendar.MINUTE, 0);
-            diaHoje.set(Calendar.SECOND, 0);
-            diaHoje.set(Calendar.MILLISECOND, 0);
-
-            EVENTOS_INICIAIS = new Evento[]{
-                    new Evento(evento.getNome(), evento.getCelular(), evento.getValor(), evento.getHora(),
-                            evento.getMinuto(), evento.getDuracao(), corEvento, evento.getHoraInicio(), evento.getHoraTermino(), evento.getDataInMillis())};
-
-            diaHoje.set(Calendar.YEAR, evento.getAno());
-            diaHoje.set(Calendar.MONTH, evento.getMes() - 1);
-            diaHoje.set(Calendar.DAY_OF_MONTH, evento.getDia());
-
-            listDia.add(diaHoje.getTimeInMillis());
-
             listaEventosRepetidos.add(new Evento(evento.getNome(), evento.getCelular(), evento.getValor(), evento.getHora(),
-                    evento.getMinuto(), evento.getDuracao(), corEvento, evento.getHoraInicio(), evento.getHoraTermino(),evento.getDataInMillis()));
+                    evento.getMinuto(), evento.getDuracao(), corEvento, evento.getHoraInicio(), evento.getHoraTermino(), evento.getDataInMillis()));
+        }
+    }
 
-            //Se ja possuir eventos nesse dia, adiciona aos eventos repetidos
-            if (todosEventos.containsKey(diaHoje.getTimeInMillis())) {
-                for (int j = 0; j < listaEventosRepetidos.size(); j++) {
-                    if (j==0){
-                        listaEventosRepetidosCopy.clear();
-                    }
-                    int comp = (listDia.get(j).compareTo(diaHoje.getTimeInMillis()));
-                    if (comp == 0) {
-                        listaEventosRepetidosCopy.add(new Evento(listaEventosRepetidos.get(j).getNome(),
-                                listaEventosRepetidos.get(j).getCelular(), listaEventosRepetidos.get(j).getValor(),
-                                listaEventosRepetidos.get(j).getHora(), listaEventosRepetidos.get(j).getMinuto(),
-                                listaEventosRepetidos.get(j).getDuracao(), corEvento, listaEventosRepetidos.get(j).getHoraInicio(),
-                                listaEventosRepetidos.get(j).getHoraTermino(), listaEventosRepetidos.get(j).getDataInMillis()));
-                    }
-                }
-                todosEventos.put(listDia.get(i), listaEventosRepetidosCopy);
-                //listaEventosRepetidosCopy.clear();
-            } else {
-                //Data ainda nao possui nenhum evento
-                todosEventos.put(diaHoje.getTimeInMillis(), Arrays.asList(EVENTOS_INICIAIS));
+    private void adicionarEventos() {
+        populandoLista();
+
+        evento = new Evento();
+        todosEventos = new LongSparseArray<>();
+
+        Map<Long, List<Evento>> EventosMap = new HashMap<>();
+
+        //Adicionando todos os Eventos ao map
+        for (Evento eventos : listaEventosRepetidos) {
+            Long key = eventos.getDataInMillis();
+            if (EventosMap.get(key) == null) {
+                EventosMap.put(key, new ArrayList<Evento>());
             }
-
-            //Define a data inicial com a clicada no calendário
-            diaHoje.set(Calendar.YEAR, anoOrcamento);
-            diaHoje.set(Calendar.MONTH, mesOrcamento);
-            diaHoje.set(Calendar.DAY_OF_MONTH, diaOrcamento);
-            diaHoje.set(Calendar.HOUR_OF_DAY, 0);
-            diaHoje.set(Calendar.MINUTE, 0);
-            diaHoje.set(Calendar.SECOND, 0);
-            diaHoje.set(Calendar.MILLISECOND, 0);
+            EventosMap.get(key).add(eventos);
         }
 
+        Set<Long> conjuntoDeChavesEventos = EventosMap.keySet();
+        for (Long id : conjuntoDeChavesEventos) {
+            List<Evento> listaEventosRepetidosCopy = new ArrayList<>();//Cria um novo arrayList para cada dia
+            //Passando todos os Eventos do enesimo id do Map para uma List
+            List<Evento> listaEventosCopy = EventosMap.get(id);
+            for (Evento evento : listaEventosCopy) {//Atribuindo todos os valores dessa lista à um evento
+                listaEventosRepetidosCopy.add(new Evento(evento.getNome(),
+                        evento.getCelular(), evento.getValor(),
+                        evento.getHora(), evento.getMinuto(),
+                        evento.getDuracao(), corEvento, evento.getHoraInicio(),
+                        evento.getHoraTermino(), evento.getDataInMillis()));
+            }
+            todosEventos.put(id, listaEventosRepetidosCopy);
+        }
+
+
+        //Define a data inicial com a clicada no calendário
+        diaHoje.set(Calendar.YEAR, anoOrcamento);
+        diaHoje.set(Calendar.MONTH, mesOrcamento);
+        diaHoje.set(Calendar.DAY_OF_MONTH, diaOrcamento);
+        diaHoje.set(Calendar.HOUR_OF_DAY, 0);
+        diaHoje.set(Calendar.MINUTE, 0);
+        diaHoje.set(Calendar.SECOND, 0);
+        diaHoje.set(Calendar.MILLISECOND, 0);
     }
 
     private void mudancaDeDia() {
@@ -558,14 +544,11 @@ public class SelecionaHorarioAgendaActivity extends AppCompatActivity {
                         if (dataInicial.equals(dataBancoInicio.getTime())) {
                             temConflito = true;
                             break;
-                        }
-                        else if (dataInicial.after(dataBancoInicio.getTime()) == true && dataInicial.before(dataBancotermino.getTime()) == false
+                        } else if (dataInicial.after(dataBancoInicio.getTime()) == true && dataInicial.before(dataBancotermino.getTime()) == false
                                 && (dataFinal.after(dataBancoInicio.getTime()) == true && dataFinal.before(dataBancotermino.getTime()) == false)) {
-                        }
-                        else if (dataInicial.after(dataBancoInicio.getTime()) == false && dataInicial.before(dataBancotermino.getTime()) == true
+                        } else if (dataInicial.after(dataBancoInicio.getTime()) == false && dataInicial.before(dataBancotermino.getTime()) == true
                                 && (dataFinal.after(dataBancoInicio.getTime()) == false && dataFinal.before(dataBancotermino.getTime())) == true) {
-                        }
-                        else {
+                        } else {
                             temConflito = true;
                             break;
                         }

@@ -35,7 +35,6 @@ import com.linkedin.android.tachyon.DayView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -141,7 +140,6 @@ public class AgendaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "EM desenvolvimento", Toast.LENGTH_SHORT).show();
-                /**
                  editDataEvento = (Calendar) diaHoje.clone();
 
                  editHorarioInicialEvento = (Calendar) diaHoje.clone();
@@ -150,7 +148,6 @@ public class AgendaFragment extends Fragment {
                  editHorarioTerminoEvento.add(Calendar.MINUTE, 60);
 
                  mostrarDialogEditEvento(false, null, null, null, android.R.color.holo_red_dark);
-                 */
             }
         });
 
@@ -170,7 +167,7 @@ public class AgendaFragment extends Fragment {
     }
 
     private void recuperarEventos() {
-        valueEventListener = eventoRef.addValueEventListener(new ValueEventListener() {
+        eventoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaEventosCarregados.clear();
@@ -193,11 +190,12 @@ public class AgendaFragment extends Fragment {
         for (int i = 0; i < listaEventosCarregados.size(); i++) {
             evento = listaEventosCarregados.get(i);
 
-            if (evento.getCorEvento().equals("Vermelho")) {
-                corEvento = android.R.color.holo_red_dark;
-            } else {
+            if (evento.getCorEvento().equals("Azul")) {
                 corEvento = R.color.cor_botoes;
+            } else {
+                corEvento = android.R.color.holo_red_dark;
             }
+
             listaEventosRepetidos.add(new Evento(evento.getNome(), evento.getCelular(), evento.getValor(), evento.getHora(),
                     evento.getMinuto(), evento.getDuracao(), corEvento, evento.getHoraInicio(), evento.getHoraTermino(), evento.getDataInMillis()));
         }
@@ -218,22 +216,21 @@ public class AgendaFragment extends Fragment {
                 EventosMap.put(key, new ArrayList<Evento>());
             }
             EventosMap.get(key).add(eventos);
-            System.out.println("Key : " + eventos.getDataInMillis());
         }
 
         Set<Long> conjuntoDeChavesEventos = EventosMap.keySet();
         for (Long id : conjuntoDeChavesEventos) {
-            List<Evento> listaEventosRepetidosCopy = new ArrayList<>();
+            List<Evento> listaEventosRepetidosCopy = new ArrayList<>();//Cria um novo arrayList para cada dia
             //Passando todos os Eventos do enesimo id do Map para uma List
             List<Evento> listaEventosCopy = EventosMap.get(id);
             for (Evento evento : listaEventosCopy) {//Atribuindo todos os valores dessa lista à um evento
                 listaEventosRepetidosCopy.add(new Evento(evento.getNome(),
                         evento.getCelular(), evento.getValor(),
                         evento.getHora(), evento.getMinuto(),
-                        evento.getDuracao(), corEvento, evento.getHoraInicio(),
+                        evento.getDuracao(), evento.getCor(), evento.getHoraInicio(),
                         evento.getHoraTermino(), evento.getDataInMillis()));
             }
-            todosEventos.put(id, listaEventosRepetidosCopy);
+                todosEventos.put(id, listaEventosRepetidosCopy);
         }
 
         //Iniciando Agenda com o dia atual
@@ -320,26 +317,25 @@ public class AgendaFragment extends Fragment {
                 ((TextView) viewEventoCriado.findViewById(R.id.txtValorAgenda)).setText(evento.getValor());
                 viewEventoCriado.setBackgroundColor(getResources().getColor(evento.getCor()));
 
-                /**
-                 viewEventoCriado.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                editEvento = evento;
+                viewEventoCriado.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editEvento = evento;
 
-                editDataEvento = (Calendar) diaHoje.clone();
+                        editDataEvento = (Calendar) diaHoje.clone();
 
-                editHorarioInicialEvento = Calendar.getInstance();
-                editHorarioInicialEvento.set(Calendar.HOUR_OF_DAY, editEvento.getHora());
-                editHorarioInicialEvento.set(Calendar.MINUTE, editEvento.getMinuto());
-                editHorarioInicialEvento.set(Calendar.SECOND, 0);
-                editHorarioInicialEvento.set(Calendar.MILLISECOND, 0);
+                        editHorarioInicialEvento = Calendar.getInstance();
+                        editHorarioInicialEvento.set(Calendar.HOUR_OF_DAY, editEvento.getHora());
+                        editHorarioInicialEvento.set(Calendar.MINUTE, editEvento.getMinuto());
+                        editHorarioInicialEvento.set(Calendar.SECOND, 0);
+                        editHorarioInicialEvento.set(Calendar.MILLISECOND, 0);
 
-                editHorarioTerminoEvento = (Calendar) editHorarioInicialEvento.clone();
-                editHorarioTerminoEvento.add(Calendar.MINUTE, editEvento.getDuracao());
+                        editHorarioTerminoEvento = (Calendar) editHorarioInicialEvento.clone();
+                        editHorarioTerminoEvento.add(Calendar.MINUTE, editEvento.getDuracao());
 
-                mostrarDialogEditEvento(true, editEvento.getNome(), editEvento.getCelular(), editEvento.getValor(), editEvento.getCor());
-                }
+                        mostrarDialogEditEvento(true, editEvento.getNome(), editEvento.getCelular(), editEvento.getValor(), editEvento.getCor());
+                    }
                 });
-                 */
 
                 listaEventoViews.add(viewEventoCriado);
 
@@ -368,6 +364,7 @@ public class AgendaFragment extends Fragment {
         evento.setValor(dadosManuais[2]);
         evento.setHoraTermino(horarioFormat.format(editHorarioTerminoEvento.getTime()));
         evento.setHoraInicio(horarioFormat.format(editHorarioInicialEvento.getTime()));
+        evento.setDataInMillis(diaHoje.getTimeInMillis());
 
         evento.salvarEvento(UsuarioFirebase.getIdentificadorUsuario());
     }
