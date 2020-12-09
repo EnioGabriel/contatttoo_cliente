@@ -40,15 +40,15 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 public class AgendaFragment extends Fragment {
 
     private Evento evento;
-
-    @NonNull
-    private Evento[] EVENTOS_INICIAIS;
 
     private Calendar diaHoje;
     private DateFormat dataFormat;
@@ -58,6 +58,7 @@ public class AgendaFragment extends Fragment {
     private Calendar editHorarioTerminoEvento;
     private Evento editEvento;
     private LongSparseArray<List<Evento>> todosEventos;
+    private ValueEventListener valueEventListener;
 
     private ViewGroup content;
     private TextView txtData;
@@ -65,7 +66,8 @@ public class AgendaFragment extends Fragment {
     private Button btnProximoDia, btnDiaAnterior, btnAddEvento;
 
     private List<Evento> listaEventosCarregados;
-    private List<Evento> listaEventoBD;
+    private List<Evento> listaEventosRepetidos = new ArrayList<>();
+    private int corEvento;
 
     private Context contexto;
 
@@ -79,7 +81,6 @@ public class AgendaFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         listaEventosCarregados = new ArrayList<>();
-        listaEventoBD = new ArrayList<>();
 
         // Adicionando horario inicial de trabalho
         diaHoje = Calendar.getInstance();
@@ -92,6 +93,12 @@ public class AgendaFragment extends Fragment {
         horarioFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
 
         horarioFormat = new SimpleDateFormat("HH:mm");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        eventoRef.removeEventListener(valueEventListener);
     }
 
     @Override
@@ -163,7 +170,7 @@ public class AgendaFragment extends Fragment {
     }
 
     private void recuperarEventos() {
-        eventoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        valueEventListener = eventoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listaEventosCarregados.clear();
@@ -181,78 +188,60 @@ public class AgendaFragment extends Fragment {
         });
     }
 
-    private void adicionarEventos() {
-        evento = new Evento();
-        todosEventos = new LongSparseArray<>();
-        int corEvento;
-        List<Evento> listaEventosRepetidos;
-        List<Evento> listaEventosRepetidosCopy;
-        List<Long> listDia = new ArrayList<>();
-        listaEventosRepetidosCopy = new ArrayList<>();
-        listaEventosRepetidos = new ArrayList<>();
+    private void populandoLista() {
 
         for (int i = 0; i < listaEventosCarregados.size(); i++) {
             evento = listaEventosCarregados.get(i);
 
-            //Verificando se evento foi inserido manualmente ou via consulta
-            // Serve para separar os tipos de evento visualmente
             if (evento.getCorEvento().equals("Vermelho")) {
                 corEvento = android.R.color.holo_red_dark;
             } else {
                 corEvento = R.color.cor_botoes;
             }
-
-            diaHoje = Calendar.getInstance();
-            diaHoje.set(Calendar.HOUR_OF_DAY, 0);
-            diaHoje.set(Calendar.MINUTE, 0);
-            diaHoje.set(Calendar.SECOND, 0);
-            diaHoje.set(Calendar.MILLISECOND, 0);
-
-            EVENTOS_INICIAIS = new Evento[]{
-                    new Evento(evento.getNome(), evento.getCelular(), evento.getValor(), evento.getHora(),
-                            evento.getMinuto(), evento.getDuracao(), corEvento, evento.getHoraInicio(), evento.getHoraTermino(), evento.getDataInMillis())};
-
-            diaHoje.set(Calendar.YEAR, evento.getAno());
-            diaHoje.set(Calendar.MONTH, evento.getMes() - 1);
-            diaHoje.set(Calendar.DAY_OF_MONTH, evento.getDia());
-
-            listDia.add(diaHoje.getTimeInMillis());
-
             listaEventosRepetidos.add(new Evento(evento.getNome(), evento.getCelular(), evento.getValor(), evento.getHora(),
                     evento.getMinuto(), evento.getDuracao(), corEvento, evento.getHoraInicio(), evento.getHoraTermino(), evento.getDataInMillis()));
-
-            //Se ja possuir eventos nesse dia, adiciona aos eventos repetidos
-            if (todosEventos.containsKey(diaHoje.getTimeInMillis())) {
-                for (int j = 0; j < listaEventosRepetidos.size(); j++) {
-                    if (j == 0) {
-                        listaEventosRepetidosCopy.clear();
-                    }
-                    Log.i("TAG", "J = " + j);
-                    int comp = (listDia.get(j).compareTo(diaHoje.getTimeInMillis()));
-                    if (comp == 0) {
-                        listaEventosRepetidosCopy.add(new Evento(listaEventosRepetidos.get(j).getNome(),
-                                listaEventosRepetidos.get(j).getCelular(), listaEventosRepetidos.get(j).getValor(),
-                                listaEventosRepetidos.get(j).getHora(), listaEventosRepetidos.get(j).getMinuto(),
-                                listaEventosRepetidos.get(j).getDuracao(), corEvento, listaEventosRepetidos.get(j).getHoraInicio(),
-                                listaEventosRepetidos.get(j).getHoraTermino(), listaEventosRepetidos.get(j).getDataInMillis()));
-
-                        Log.i("TAG", "DIA: " + listDia.get(j) + " " + listaEventosRepetidos.get(j).getNome() + " " + listaEventosRepetidos.get(j).getHoraInicio() + " " +
-                                listaEventosRepetidos.get(j).getHoraTermino());
-                    }
-                    todosEventos.put(listDia.get(i), listaEventosRepetidosCopy);
-                    Log.i("TAG", "TAM 2 " + todosEventos.size());
-                }
-            } else {
-                //Data ainda nao possui nenhum evento
-                todosEventos.put(diaHoje.getTimeInMillis(), Arrays.asList(EVENTOS_INICIAIS));
-            }
-
-            diaHoje = Calendar.getInstance();
-            diaHoje.set(Calendar.HOUR_OF_DAY, 0);
-            diaHoje.set(Calendar.MINUTE, 0);
-            diaHoje.set(Calendar.SECOND, 0);
-            diaHoje.set(Calendar.MILLISECOND, 0);
         }
+    }
+
+    private void adicionarEventos() {
+        populandoLista();
+
+        evento = new Evento();
+        todosEventos = new LongSparseArray<>();
+
+        Map<Long, List<Evento>> EventosMap = new HashMap<>();
+
+        //Adicionando todos os Eventos ao map
+        for (Evento eventos : listaEventosRepetidos) {
+            Long key = eventos.getDataInMillis();
+            if (EventosMap.get(key) == null) {
+                EventosMap.put(key, new ArrayList<Evento>());
+            }
+            EventosMap.get(key).add(eventos);
+            System.out.println("Key : " + eventos.getDataInMillis());
+        }
+
+        Set<Long> conjuntoDeChavesEventos = EventosMap.keySet();
+        for (Long id : conjuntoDeChavesEventos) {
+            List<Evento> listaEventosRepetidosCopy = new ArrayList<>();
+            //Passando todos os Eventos do enesimo id do Map para uma List
+            List<Evento> listaEventosCopy = EventosMap.get(id);
+            for (Evento evento : listaEventosCopy) {//Atribuindo todos os valores dessa lista à um evento
+                listaEventosRepetidosCopy.add(new Evento(evento.getNome(),
+                        evento.getCelular(), evento.getValor(),
+                        evento.getHora(), evento.getMinuto(),
+                        evento.getDuracao(), corEvento, evento.getHoraInicio(),
+                        evento.getHoraTermino(), evento.getDataInMillis()));
+            }
+            todosEventos.put(id, listaEventosRepetidosCopy);
+        }
+
+        //Iniciando Agenda com o dia atual
+        diaHoje = Calendar.getInstance();
+        diaHoje.set(Calendar.HOUR_OF_DAY, 0);
+        diaHoje.set(Calendar.MINUTE, 0);
+        diaHoje.set(Calendar.SECOND, 0);
+        diaHoje.set(Calendar.MILLISECOND, 0);
     }
 
     @Override
