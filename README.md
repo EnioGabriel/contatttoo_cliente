@@ -1,6 +1,6 @@
 # Contattoo TCC
 ## Descrição do Projeto
-<p align="center">App mobile, voltado para a parte do tatuador. Aplicativo desenvolvido para centralizar a conexão entre clientes e tatuadores   </p>
+<p align="left">App mobile, voltado para a parte do tatuador. Aplicativo desenvolvido para centralizar a conexão entre clientes e tatuadores   </p>
 
 ### Pré-requisitos
 Ter um dispositivo físico Android ou qualquer emulador Android.
