@@ -17,7 +17,6 @@ Ter um dispositivo físico Android ou qualquer emulador Android.
 
 ### 🛠 Tecnologias
 
-As seguintes ferramentas foram usadas na construção do projeto:
 - [Android Studio](https://developer.android.com/studio/)
 - [Java](https://www.java.com/pt-BR/)
 - [Firebase](https://firebase.google.com/)
